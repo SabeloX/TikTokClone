@@ -27,7 +27,6 @@ function Video({
             setPlay(true)
         }
     }
-console.log(url)
     return (
         <div className='video'>
             <video 
