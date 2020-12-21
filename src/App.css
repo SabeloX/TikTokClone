@@ -4,7 +4,6 @@ html {
 
 .app{
     height: 100vh;
-    background-color: black;
     display: grid;
     place-items: center;
 }
@@ -14,6 +13,7 @@ html {
     height: 100%;
     overflow: scroll;
     width: 100%;
+    max-width: 500px;
     scroll-snap-type: y mandatory;
 }
 
@@ -28,10 +28,15 @@ html {
     scrollbar-width: none;
 }
 
+/*Desktop Screen*/
 @media (min-width: 480px){
     .app_videos{
         width: 80%;
         max-width: 500px;
         border-radius: 20px;
+        position: relative;
+        height: 100%;
+        overflow: scroll;
+        scroll-snap-type: y mandatory;
     }
 }

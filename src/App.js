@@ -1,41 +1,37 @@
 import React, {useState, useEffect} from 'react';
 import './App.css';
-import Video from './videos/Video'
-import database from './firebase'
+import { BrowserRouter as Router, Redirect, Route, Switch} from 'react-router-dom';
+import Dashboard from './dashboard/Dashboard';
+import SignIn from './auth/SignIn';
+import { auth } from './firebase';
 
 function App() {
 
-  const [videos, setVideos] = useState([])
+  const [user, setUser] = useState()
+  const [loading, setLoading] = useState()
 
-  useEffect(() =>{
-
-    //onSnapshot gets all the documents in the tik-tok-videos collection
-    database.collection('tik-tok-videos').onSnapshot(snapshot =>(
-      setVideos(snapshot.docs.map(doc => (
-        doc.data()
-      )))
-    ))
-
+  useEffect(() => {
+    auth.onAuthStateChanged( user => {
+      setUser(user)
+      setLoading(false)
+    })
+    console.log(user)
   }, [])
 
   return (
     <div className="app">
-      <div className='app_videos'>
-
-        {
-          videos.length && videos.map((video, key) =>(
-            
-            <Video key={key}
-              url={video.url}
-              description={video.description}
-              channel={video.channel}
-              likes={video.likes}
-              messages={video.messages}
-              shares={video.shares}
-              song={video.song}/>
-          ))
+      <Router>
+        {!loading &&
+          <Switch>
+            <Route exact path='/' render={() => {
+              return user ? 
+                <Dashboard/> : 
+                <Redirect to='/signin'/>
+            }}/>
+            <Route path='/signin' component={SignIn}/>
+          </Switch>
         }
-      </div>
+      </Router>
     </div>
   );
 }
